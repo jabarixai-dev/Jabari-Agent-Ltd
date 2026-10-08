@@ -1,0 +1,3 @@
+create table if not exists agent_runs(id bigserial primary key,agent_id text references agents(id),task_id text references tasks(id),status text not null,summary text,started_at timestamptz not null default now(),finished_at timestamptz);
+create table if not exists agent_permissions(agent_id text primary key references agents(id),permissions jsonb not null default '{}'::jsonb);
+create table if not exists automation_rules(id text primary key,name text not null,enabled boolean not null default true,rule jsonb not null default '{}'::jsonb);
