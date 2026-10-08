@@ -13,8 +13,8 @@ body {
 }
 
 body {
-  background: #070706;
-  color: #f3eee4;
+  background: #080807;
+  color: #f4eee3;
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -27,8 +27,8 @@ a {
   min-height: 100vh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 34%, rgba(126, 20, 8, 0.12), transparent 30rem),
-    linear-gradient(180deg, #0a0908 0%, #070706 100%);
+    radial-gradient(circle at 50% 30%, rgba(107, 20, 10, 0.12), transparent 34rem),
+    #080807;
 }
 
 .ticker {
@@ -36,26 +36,20 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 18px;
-  padding: 0 22px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(188, 145, 26, 0.42);
-  border-top: 1px solid rgba(188, 145, 26, 0.16);
-  color: #c5a331;
+  gap: 20px;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(193, 150, 29, 0.42);
+  color: #c7a83e;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.28em;
   white-space: nowrap;
-}
-
-.ticker span:nth-child(odd) {
-  color: #d5b64c;
 }
 
 .site-header {
   width: min(100% - 48px, 1180px);
-  margin: 0 auto;
   height: 100px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -63,38 +57,39 @@ a {
 
 .brand-wordmark,
 .hero-title {
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-family: Rockwell, "Roboto Slab", Georgia, "Times New Roman", serif;
+  font-weight: 900;
+  letter-spacing: 0.025em;
 }
 
 .brand-wordmark {
-  font-size: clamp(28px, 5vw, 42px);
+  font-size: clamp(29px, 5vw, 43px);
 }
 
 .brand-wordmark span,
 .hero-title span {
-  color: #c92732;
+  color: #c92b36;
 }
 
 .home-link {
-  color: #b7ad9d;
+  color: #bdb2a1;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.17em;
 }
 
 .hero {
   width: min(100% - 40px, 760px);
   margin: 0 auto;
-  padding: 34px 0 70px;
+  padding: 36px 0 78px;
   text-align: center;
 }
 
 .portrait-frame {
   position: relative;
-  width: min(74vw, 290px);
+  width: min(55vw, 265px);
   aspect-ratio: 1;
-  margin: 0 auto 28px;
+  margin: 0 auto 32px;
   border-radius: 50%;
 }
 
@@ -102,46 +97,56 @@ a {
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 57%, rgba(255, 190, 40, 0.75) 58%, rgba(255, 190, 40, 0.08) 63%, transparent 69%);
-  filter: blur(1px);
+  background: radial-gradient(
+    circle,
+    transparent 56%,
+    rgba(235, 184, 43, 0.86) 58%,
+    rgba(235, 184, 43, 0.16) 64%,
+    transparent 70%
+  );
   box-shadow:
-    0 0 20px rgba(255, 189, 39, 0.45),
-    0 0 55px rgba(183, 28, 24, 0.12);
+    0 0 24px rgba(226, 173, 35, 0.5),
+    0 0 58px rgba(226, 173, 35, 0.14);
 }
 
 .portrait {
   position: relative;
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid rgba(211, 163, 42, 0.72);
-  box-shadow: 0 0 28px rgba(221, 169, 42, 0.18);
+  border: 2px solid rgba(221, 171, 41, 0.75);
 }
 
 .hero-title {
   margin: 0;
-  font-size: clamp(48px, 12vw, 82px);
-  line-height: 0.95;
-  letter-spacing: 0.02em;
+  font-size: clamp(50px, 12vw, 84px);
+  line-height: 0.98;
 }
 
 .hero-subtitle {
-  margin: 26px 0 34px;
-  color: #c4a73d;
+  margin: 24px 0 13px;
+  color: #c5a53a;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(11px, 2.8vw, 16px);
-  letter-spacing: 0.25em;
-  white-space: nowrap;
+  font-size: clamp(11px, 2.5vw, 15px);
+  letter-spacing: 0.23em;
+}
+
+.hero-copy {
+  max-width: 560px;
+  margin: 0 auto 32px;
+  color: #a9a094;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 .social-row {
   display: flex;
   justify-content: center;
   gap: 22px;
-  margin-bottom: 48px;
+  margin: 0 0 48px;
 }
 
 .social-button {
@@ -149,16 +154,9 @@ a {
   height: 78px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(180, 140, 28, 0.4);
+  border: 1px solid rgba(180, 140, 28, 0.42);
   border-radius: 50%;
-  background: #0c0b09;
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-
-.social-button:hover {
-  transform: translateY(-3px);
-  border-color: rgba(223, 181, 58, 0.85);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  background: #0d0c0a;
 }
 
 .social-button svg {
@@ -169,130 +167,109 @@ a {
 
 .social-whatsapp { color: #1bd741; }
 .social-x { color: #f1eee7; }
-.social-telegram { color: #22a7e8; }
+.social-telegram { color: #25a9e8; }
 .social-youtube { color: #f20d16; }
 
 .link-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
-  width: 100%;
 }
 
 .feature-link {
-  min-height: 110px;
+  min-height: 108px;
   display: grid;
   place-items: center;
-  padding: 20px;
+  padding: 18px;
   border: 1px solid rgba(179, 139, 25, 0.4);
   border-radius: 20px;
-  background: rgba(18, 16, 12, 0.82);
-  font-size: clamp(22px, 4vw, 30px);
+  background: #12100c;
+  font-size: clamp(20px, 4vw, 29px);
   font-weight: 700;
-  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  text-align: center;
 }
 
-.feature-link:hover {
-  transform: translateY(-3px);
-  border-color: rgba(222, 181, 55, 0.75);
-}
-
-.feature-link.active {
-  color: #17120a;
+.feature-link:first-child {
+  color: #19140a;
   background: linear-gradient(180deg, #f0cc50 0%, #d8ad2b 100%);
-  border-color: #efc744;
-  box-shadow: 0 10px 30px rgba(202, 157, 31, 0.12);
+  border-color: #edc442;
 }
 
 .hero-footer {
-  margin: 72px 0 0;
-  color: #938875;
+  margin: 70px 0 0;
+  color: #918678;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.28em;
+  font-size: 11px;
+  letter-spacing: 0.27em;
 }
 
-.public-section {
+.public-copy {
   width: min(100% - 40px, 760px);
   margin: 0 auto;
-  padding: 110px 0;
-  border-top: 1px solid rgba(180, 140, 28, 0.18);
+  padding: 90px 0;
+  border-top: 1px solid rgba(179, 139, 25, 0.14);
 }
 
-.section-kicker {
-  margin: 0 0 14px;
-  color: #c5a331;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.28em;
+.public-copy h2 {
+  margin: 0 0 16px;
+  font-family: Rockwell, "Roboto Slab", Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 7vw, 52px);
 }
 
-.public-section h2 {
-  margin: 0 0 18px;
-  font-size: clamp(34px, 7vw, 56px);
-}
-
-.public-section p:not(.section-kicker) {
+.public-copy p {
   max-width: 620px;
+  margin: 0;
   color: #aaa095;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
   line-height: 1.8;
-}
-
-.site-footer {
-  padding: 35px 20px 55px;
-  text-align: center;
-  color: #796f60;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.25em;
 }
 
 @media (max-width: 560px) {
   .ticker {
     justify-content: flex-start;
     gap: 24px;
-    font-size: 10px;
-    letter-spacing: 0.24em;
+    font-size: 9px;
+    letter-spacing: 0.22em;
   }
 
-  .ticker span:nth-child(6),
-  .ticker span:nth-child(7),
-  .ticker span:nth-child(8),
-  .ticker span:nth-child(9) {
+  .ticker span:nth-child(n+6) {
     display: none;
   }
 
   .site-header {
     width: min(100% - 38px, 1180px);
-    height: 92px;
-  }
-
-  .home-link {
-    font-size: 12px;
+    height: 88px;
   }
 
   .hero {
-    padding-top: 22px;
+    padding-top: 25px;
   }
 
   .portrait-frame {
-    width: min(72vw, 270px);
+    width: min(56vw, 245px);
   }
 
   .hero-subtitle {
     letter-spacing: 0.18em;
   }
 
+  .hero-copy {
+    font-size: 13px;
+    padding: 0 15px;
+  }
+
   .social-row {
     gap: 14px;
-    margin-bottom: 38px;
   }
 
   .social-button {
     width: 68px;
     height: 68px;
+  }
+
+  .social-button svg {
+    width: 25px;
+    height: 25px;
   }
 
   .link-grid {
@@ -302,12 +279,12 @@ a {
   .feature-link {
     min-height: 100px;
     border-radius: 18px;
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .hero-footer {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+    font-size: 9px;
+    letter-spacing: 0.18em;
   }
 }
 
@@ -315,14 +292,5 @@ a {
   .social-button {
     width: 62px;
     height: 62px;
-  }
-
-  .social-button svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .hero-subtitle {
-    font-size: 10px;
   }
 }
