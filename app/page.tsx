@@ -1,7 +1,8 @@
+import Link from "next/link";
+
 const socials = [
   {
     label: "WhatsApp",
-    href: "#",
     className: "whatsapp",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -11,94 +12,55 @@ const socials = [
   },
   {
     label: "X",
-    href: "#",
     className: "x",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.37l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.87h1.72L8.29 4.02H6.45L17.8 19.87Z"/>
-      </svg>
-    ),
+    icon: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.37l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2Zm-1.1 17.87h1.72L8.29 4.02H6.45L17.8 19.87Z"/></svg>,
   },
   {
     label: "Telegram",
-    href: "#",
     className: "telegram",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m21.7 3.36-3.2 15.1c-.24 1.07-.87 1.34-1.76.84l-4.85-3.57-2.34 2.25c-.26.26-.48.48-.98.48l.35-4.95 9.01-8.14c.39-.35-.08-.55-.61-.2L6.18 12.2 1.45 10.72c-1.03-.32-1.05-1.03.21-1.52L20.15 2.08c.86-.31 1.62.2 1.55 1.28Z"/>
-      </svg>
-    ),
+    icon: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.7 3.36-3.2 15.1c-.24 1.07-.87 1.34-1.76.84l-4.85-3.57-2.34 2.25c-.26.26-.48.48-.98.48l.35-4.95 9.01-8.14c.39-.35-.08-.55-.61-.2L6.18 12.2 1.45 10.72c-1.03-.32-1.05-1.03.21-1.52L20.15 2.08c.86-.31 1.62.2 1.55 1.28Z"/></svg>,
   },
   {
     label: "YouTube",
-    href: "#",
     className: "youtube",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M23.5 6.2a3.02 3.02 0 0 0-2.13-2.14C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.37.56A3.02 3.02 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.13 2.14c1.88.56 9.37.56 9.37.56s7.49 0 9.37-.56a3.02 3.02 0 0 0 2.13-2.14A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.9V8.1l6.5 3.9-6.5 3.9Z"/>
-      </svg>
-    ),
+    icon: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.13-2.14C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.37.56A3.02 3.02 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.13 2.14c1.88.56 9.37.56 9.37.56s7.49 0 9.37-.56a3.02 3.02 0 0 0 2.13-2.14A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.9V8.1l6.5 3.9-6.5 3.9Z"/></svg>,
   },
 ];
 
 const links = [
-  ["Work With Me", "#work"],
-  ["My Projects", "#projects"],
-  ["Content", "#content"],
-  ["Connect With Me", "#connect"],
-  ["X / Twitter", "#x"],
+  ["My Services", "/work"],
+  ["My Projects", "/projects"],
+  ["About Me", "/about"],
 ];
 
 export default function Home() {
   return (
     <main className="public-home">
       <div className="ticker" aria-label="Topics">
-        <span>•</span>
-        <span>MARKETS</span>
-        <span>•</span>
-        <span>PSYCHOLOGY</span>
-        <span>•</span>
-        <span>AI</span>
-        <span>•</span>
-        <span>CULTURE</span>
-        <span>•</span>
+        <div className="ticker-track">
+          <div className="ticker-set"><span>•</span><span>MARKETS</span><span>•</span><span>PSYCHOLOGY</span><span>•</span><span>AI</span><span>•</span><span>CULTURE</span><span>•</span></div>
+          <div className="ticker-set" aria-hidden="true"><span>•</span><span>MARKETS</span><span>•</span><span>PSYCHOLOGY</span><span>•</span><span>AI</span><span>•</span><span>CULTURE</span><span>•</span></div>
+        </div>
       </div>
 
       <header className="site-header">
-        <a className="brand-wordmark" href="/" aria-label="Jabari home">
-          JABARI<span>.</span>
-        </a>
-        <a className="home-link" href="/">HOME</a>
+        <Link className="brand-wordmark" href="/">JABARI<span>.</span></Link>
+        <Link className="home-link" href="/">HOME</Link>
       </header>
 
       <section className="hero">
         <div className="portrait-frame">
           <div className="portrait-glow" />
-          <img
-            src="/brand/jabari-portrait.png"
-            alt="Jabari"
-            className="portrait"
-          />
+          <img src="/brand/jabari-portrait.png" alt="Jabari" className="portrait" />
         </div>
 
-        <h1 className="hero-title">
-          JABARI<span>.</span>
-        </h1>
-
+        <h1 className="hero-title">JABARI<span>.</span></h1>
         <p className="hero-subtitle">FOUNDER · BUILDER · OPERATOR</p>
-
-        <p className="hero-copy">
-          Building systems, products and opportunities that turn ideas into revenue.
-        </p>
+        <p className="hero-copy">Building systems, products and opportunities that turn ideas into revenue.</p>
 
         <div className="social-row" aria-label="Social links">
           {socials.map((social) => (
-            <a
-              key={social.label}
-              href={social.href}
-              className={`social-button social-${social.className}`}
-              aria-label={social.label}
-            >
+            <a key={social.label} href="#" className={`social-button social-${social.className}`} aria-label={social.label}>
               {social.icon}
             </a>
           ))}
@@ -106,36 +68,11 @@ export default function Home() {
 
         <nav className="link-grid" aria-label="Jabari links">
           {links.map(([label, href]) => (
-            <a key={label} href={href} className="feature-link">
-              {label}
-            </a>
+            <Link key={label} href={href} className="feature-link">{label}</Link>
           ))}
         </nav>
 
         <p className="hero-footer">JB · BUILT DIFFERENT</p>
-      </section>
-
-      <section className="public-copy" id="work">
-        <h2>Founder · Builder · Operator</h2>
-        <p>
-          Building systems, products and opportunities that turn ideas into revenue.
-        </p>
-      </section>
-
-      <section className="public-copy" id="projects">
-        <h2>My Projects</h2>
-      </section>
-
-      <section className="public-copy" id="content">
-        <h2>Content</h2>
-      </section>
-
-      <section className="public-copy" id="connect">
-        <h2>Connect With Me</h2>
-      </section>
-
-      <section className="public-copy" id="x">
-        <h2>X / Twitter</h2>
       </section>
     </main>
   );

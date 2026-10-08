@@ -1,296 +1,39 @@
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-html,
-body {
-  margin: 0;
-  min-height: 100%;
-}
-
-body {
-  background: #080807;
-  color: #f4eee3;
-  font-family: Georgia, "Times New Roman", serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.public-home {
-  min-height: 100vh;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(107, 20, 10, 0.12), transparent 34rem),
-    #080807;
-}
-
-.ticker {
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 20px;
-  padding: 0 24px;
-  border-bottom: 1px solid rgba(193, 150, 29, 0.42);
-  color: #c7a83e;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.28em;
-  white-space: nowrap;
-}
-
-.site-header {
-  width: min(100% - 48px, 1180px);
-  height: 100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand-wordmark,
-.hero-title {
-  font-family: Rockwell, "Roboto Slab", Georgia, "Times New Roman", serif;
-  font-weight: 900;
-  letter-spacing: 0.025em;
-}
-
-.brand-wordmark {
-  font-size: clamp(29px, 5vw, 43px);
-}
-
-.brand-wordmark span,
-.hero-title span {
-  color: #c92b36;
-}
-
-.home-link {
-  color: #bdb2a1;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.17em;
-}
-
-.hero {
-  width: min(100% - 40px, 760px);
-  margin: 0 auto;
-  padding: 36px 0 78px;
-  text-align: center;
-}
-
-.portrait-frame {
-  position: relative;
-  width: min(55vw, 265px);
-  aspect-ratio: 1;
-  margin: 0 auto 32px;
-  border-radius: 50%;
-}
-
-.portrait-glow {
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    transparent 56%,
-    rgba(235, 184, 43, 0.86) 58%,
-    rgba(235, 184, 43, 0.16) 64%,
-    transparent 70%
-  );
-  box-shadow:
-    0 0 24px rgba(226, 173, 35, 0.5),
-    0 0 58px rgba(226, 173, 35, 0.14);
-}
-
-.portrait {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid rgba(221, 171, 41, 0.75);
-}
-
-.hero-title {
-  margin: 0;
-  font-size: clamp(50px, 12vw, 84px);
-  line-height: 0.98;
-}
-
-.hero-subtitle {
-  margin: 24px 0 13px;
-  color: #c5a53a;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(11px, 2.5vw, 15px);
-  letter-spacing: 0.23em;
-}
-
-.hero-copy {
-  max-width: 560px;
-  margin: 0 auto 32px;
-  color: #a9a094;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.social-row {
-  display: flex;
-  justify-content: center;
-  gap: 22px;
-  margin: 0 0 48px;
-}
-
-.social-button {
-  width: 78px;
-  height: 78px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(180, 140, 28, 0.42);
-  border-radius: 50%;
-  background: #0d0c0a;
-}
-
-.social-button svg {
-  width: 29px;
-  height: 29px;
-  fill: currentColor;
-}
-
-.social-whatsapp { color: #1bd741; }
-.social-x { color: #f1eee7; }
-.social-telegram { color: #25a9e8; }
-.social-youtube { color: #f20d16; }
-
-.link-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-}
-
-.feature-link {
-  min-height: 108px;
-  display: grid;
-  place-items: center;
-  padding: 18px;
-  border: 1px solid rgba(179, 139, 25, 0.4);
-  border-radius: 20px;
-  background: #12100c;
-  font-size: clamp(20px, 4vw, 29px);
-  font-weight: 700;
-  text-align: center;
-}
-
-.feature-link:first-child {
-  color: #19140a;
-  background: linear-gradient(180deg, #f0cc50 0%, #d8ad2b 100%);
-  border-color: #edc442;
-}
-
-.hero-footer {
-  margin: 70px 0 0;
-  color: #918678;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.27em;
-}
-
-.public-copy {
-  width: min(100% - 40px, 760px);
-  margin: 0 auto;
-  padding: 90px 0;
-  border-top: 1px solid rgba(179, 139, 25, 0.14);
-}
-
-.public-copy h2 {
-  margin: 0 0 16px;
-  font-family: Rockwell, "Roboto Slab", Georgia, "Times New Roman", serif;
-  font-size: clamp(32px, 7vw, 52px);
-}
-
-.public-copy p {
-  max-width: 620px;
-  margin: 0;
-  color: #aaa095;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.8;
-}
-
-@media (max-width: 560px) {
-  .ticker {
-    justify-content: flex-start;
-    gap: 24px;
-    font-size: 9px;
-    letter-spacing: 0.22em;
-  }
-
-  .ticker span:nth-child(n+6) {
-    display: none;
-  }
-
-  .site-header {
-    width: min(100% - 38px, 1180px);
-    height: 88px;
-  }
-
-  .hero {
-    padding-top: 25px;
-  }
-
-  .portrait-frame {
-    width: min(56vw, 245px);
-  }
-
-  .hero-subtitle {
-    letter-spacing: 0.18em;
-  }
-
-  .hero-copy {
-    font-size: 13px;
-    padding: 0 15px;
-  }
-
-  .social-row {
-    gap: 14px;
-  }
-
-  .social-button {
-    width: 68px;
-    height: 68px;
-  }
-
-  .social-button svg {
-    width: 25px;
-    height: 25px;
-  }
-
-  .link-grid {
-    gap: 14px;
-  }
-
-  .feature-link {
-    min-height: 100px;
-    border-radius: 18px;
-    font-size: 20px;
-  }
-
-  .hero-footer {
-    font-size: 9px;
-    letter-spacing: 0.18em;
-  }
-}
-
-@media (max-width: 390px) {
-  .social-button {
-    width: 62px;
-    height: 62px;
-  }
-}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;min-height:100%}
+body{background:#080807;color:#f4eee3;font-family:Georgia,"Times New Roman",serif}
+a{color:inherit;text-decoration:none}
+.public-home,.public-page{min-height:100vh;overflow:hidden;background:radial-gradient(circle at 50% 30%,rgba(107,20,10,.12),transparent 34rem),#080807}
+.ticker{height:54px;display:flex;align-items:center;overflow:hidden;padding:0;border-bottom:1px solid rgba(193,150,29,.42);color:#c7a83e;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.28em;white-space:nowrap}
+.ticker-track{display:flex;width:max-content;animation:ticker-scroll 22s linear infinite;will-change:transform}
+.ticker-set{display:flex;align-items:center;gap:20px;padding-right:20px;flex:none}
+@keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.site-header{width:min(100% - 48px,1180px);height:100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.brand-wordmark,.hero-title,.page-title{font-family:Rockwell,"Roboto Slab",Georgia,"Times New Roman",serif;font-weight:900;letter-spacing:.025em}
+.brand-wordmark{font-size:clamp(29px,5vw,43px)}
+.brand-wordmark span,.hero-title span{color:#c92b36}
+.home-link{color:#bdb2a1;font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:.17em}
+.hero{width:min(100% - 40px,760px);margin:0 auto;padding:36px 0 78px;text-align:center}
+.portrait-frame{position:relative;width:min(55vw,265px);aspect-ratio:1;margin:0 auto 32px;border-radius:50%}
+.portrait-glow{position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,transparent 56%,rgba(235,184,43,.86) 58%,rgba(235,184,43,.16) 64%,transparent 70%);box-shadow:0 0 24px rgba(226,173,35,.5),0 0 58px rgba(226,173,35,.14)}
+.portrait{position:relative;display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid rgba(221,171,41,.75)}
+.hero-title{margin:0;font-size:clamp(50px,12vw,84px);line-height:.98}
+.hero-subtitle{margin:24px 0 13px;color:#c5a53a;font-family:Arial,Helvetica,sans-serif;font-size:clamp(11px,2.5vw,15px);letter-spacing:.23em}
+.hero-copy{max-width:560px;margin:0 auto 32px;color:#a9a094;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7}
+.social-row{display:flex;justify-content:center;gap:22px;margin:0 0 48px}
+.social-button{width:78px;height:78px;display:grid;place-items:center;border:1px solid rgba(180,140,28,.42);border-radius:50%;background:#0d0c0a}
+.social-button svg{width:29px;height:29px;fill:currentColor}
+.social-whatsapp{color:#1bd741}.social-x{color:#f1eee7}.social-telegram{color:#25a9e8}.social-youtube{color:#f20d16}
+.link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.feature-link{min-height:108px;display:grid;place-items:center;padding:18px;border:1px solid rgba(179,139,25,.4);border-radius:20px;background:#12100c;font-size:clamp(20px,4vw,29px);font-weight:700;text-align:center;transition:border-color .16s ease,transform .16s ease}
+.feature-link:hover{transform:translateY(-2px);border-color:rgba(222,181,55,.75)}
+.feature-link:nth-child(3){grid-column:1 / -1;width:min(100%,calc(50% - 11px));justify-self:center}
+.hero-footer{margin:70px 0 0;color:#918678;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.27em}
+.public-page .page-content{width:min(100% - 40px,760px);margin:0 auto;padding:75px 0 110px}
+.page-kicker{margin:0 0 14px;color:#c5a53a;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.28em}
+.page-title{margin:0 0 22px;font-size:clamp(44px,9vw,70px)}
+.page-copy{max-width:650px;color:#aaa095;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.9}
+.back-link{display:inline-block;margin-top:45px;padding:16px 25px;border:1px solid rgba(179,139,25,.4);border-radius:14px;font-family:Arial,Helvetica,sans-serif;letter-spacing:.08em}
+@media(max-width:560px){.ticker{justify-content:flex-start;font-size:9px;letter-spacing:.22em}.ticker-set{gap:24px;padding-right:24px}.site-header{width:min(100% - 38px,1180px);height:88px}.hero{padding-top:25px}.portrait-frame{width:min(56vw,245px)}.hero-subtitle{letter-spacing:.18em}.hero-copy{font-size:13px;padding:0 15px}.social-row{gap:14px}.social-button{width:68px;height:68px}.social-button svg{width:25px;height:25px}.link-grid{gap:14px}.feature-link{min-height:100px;border-radius:18px;font-size:20px}.hero-footer{font-size:9px;letter-spacing:.18em}}
+@media(max-width:390px){.social-button{width:62px;height:62px}}
