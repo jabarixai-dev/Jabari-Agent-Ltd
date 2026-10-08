@@ -28,7 +28,7 @@ const socials = [
 ];
 
 const links = [
-  ["My Services", "/services"],
+  ["My Services", "/work"],
   ["My Projects", "/projects"],
   ["About Me", "/about"],
 ];
