@@ -1,0 +1,1 @@
+export type Mission={id:string;name:string;objective:string;status:"draft"|"active"|"paused"|"completed"};
