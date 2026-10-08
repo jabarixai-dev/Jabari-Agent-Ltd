@@ -1,1 +1,328 @@
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#050505;color:#fff}a{text-decoration:none;color:inherit}.gold{color:#d4af37}.red{color:#e21b23}.card{border:1px solid #2a2a2a;background:#0d0d0d;border-radius:18px}
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #070706;
+  color: #f3eee4;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.public-home {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(126, 20, 8, 0.12), transparent 30rem),
+    linear-gradient(180deg, #0a0908 0%, #070706 100%);
+}
+
+.ticker {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 18px;
+  padding: 0 22px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(188, 145, 26, 0.42);
+  border-top: 1px solid rgba(188, 145, 26, 0.16);
+  color: #c5a331;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+}
+
+.ticker span:nth-child(odd) {
+  color: #d5b64c;
+}
+
+.site-header {
+  width: min(100% - 48px, 1180px);
+  margin: 0 auto;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-wordmark,
+.hero-title {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.brand-wordmark {
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.brand-wordmark span,
+.hero-title span {
+  color: #c92732;
+}
+
+.home-link {
+  color: #b7ad9d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+}
+
+.hero {
+  width: min(100% - 40px, 760px);
+  margin: 0 auto;
+  padding: 34px 0 70px;
+  text-align: center;
+}
+
+.portrait-frame {
+  position: relative;
+  width: min(74vw, 290px);
+  aspect-ratio: 1;
+  margin: 0 auto 28px;
+  border-radius: 50%;
+}
+
+.portrait-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 57%, rgba(255, 190, 40, 0.75) 58%, rgba(255, 190, 40, 0.08) 63%, transparent 69%);
+  filter: blur(1px);
+  box-shadow:
+    0 0 20px rgba(255, 189, 39, 0.45),
+    0 0 55px rgba(183, 28, 24, 0.12);
+}
+
+.portrait {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(211, 163, 42, 0.72);
+  box-shadow: 0 0 28px rgba(221, 169, 42, 0.18);
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(48px, 12vw, 82px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+}
+
+.hero-subtitle {
+  margin: 26px 0 34px;
+  color: #c4a73d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(11px, 2.8vw, 16px);
+  letter-spacing: 0.25em;
+  white-space: nowrap;
+}
+
+.social-row {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 48px;
+}
+
+.social-button {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(180, 140, 28, 0.4);
+  border-radius: 50%;
+  background: #0c0b09;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.social-button:hover {
+  transform: translateY(-3px);
+  border-color: rgba(223, 181, 58, 0.85);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.social-button svg {
+  width: 29px;
+  height: 29px;
+  fill: currentColor;
+}
+
+.social-whatsapp { color: #1bd741; }
+.social-x { color: #f1eee7; }
+.social-telegram { color: #22a7e8; }
+.social-youtube { color: #f20d16; }
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  width: 100%;
+}
+
+.feature-link {
+  min-height: 110px;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  border: 1px solid rgba(179, 139, 25, 0.4);
+  border-radius: 20px;
+  background: rgba(18, 16, 12, 0.82);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.feature-link:hover {
+  transform: translateY(-3px);
+  border-color: rgba(222, 181, 55, 0.75);
+}
+
+.feature-link.active {
+  color: #17120a;
+  background: linear-gradient(180deg, #f0cc50 0%, #d8ad2b 100%);
+  border-color: #efc744;
+  box-shadow: 0 10px 30px rgba(202, 157, 31, 0.12);
+}
+
+.hero-footer {
+  margin: 72px 0 0;
+  color: #938875;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+}
+
+.public-section {
+  width: min(100% - 40px, 760px);
+  margin: 0 auto;
+  padding: 110px 0;
+  border-top: 1px solid rgba(180, 140, 28, 0.18);
+}
+
+.section-kicker {
+  margin: 0 0 14px;
+  color: #c5a331;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+}
+
+.public-section h2 {
+  margin: 0 0 18px;
+  font-size: clamp(34px, 7vw, 56px);
+}
+
+.public-section p:not(.section-kicker) {
+  max-width: 620px;
+  color: #aaa095;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.site-footer {
+  padding: 35px 20px 55px;
+  text-align: center;
+  color: #796f60;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+}
+
+@media (max-width: 560px) {
+  .ticker {
+    justify-content: flex-start;
+    gap: 24px;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+  }
+
+  .ticker span:nth-child(6),
+  .ticker span:nth-child(7),
+  .ticker span:nth-child(8),
+  .ticker span:nth-child(9) {
+    display: none;
+  }
+
+  .site-header {
+    width: min(100% - 38px, 1180px);
+    height: 92px;
+  }
+
+  .home-link {
+    font-size: 12px;
+  }
+
+  .hero {
+    padding-top: 22px;
+  }
+
+  .portrait-frame {
+    width: min(72vw, 270px);
+  }
+
+  .hero-subtitle {
+    letter-spacing: 0.18em;
+  }
+
+  .social-row {
+    gap: 14px;
+    margin-bottom: 38px;
+  }
+
+  .social-button {
+    width: 68px;
+    height: 68px;
+  }
+
+  .link-grid {
+    gap: 14px;
+  }
+
+  .feature-link {
+    min-height: 100px;
+    border-radius: 18px;
+    font-size: 22px;
+  }
+
+  .hero-footer {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+}
+
+@media (max-width: 390px) {
+  .social-button {
+    width: 62px;
+    height: 62px;
+  }
+
+  .social-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero-subtitle {
+    font-size: 10px;
+  }
+}
