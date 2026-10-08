@@ -1,33 +1,33 @@
 # Jabari Revenue OS
 
-Private, single-operator AI opportunity and revenue operating system.
+Private autonomous revenue platform for a single operator.
 
-## Current build
+## Structure
+- `app/` — public face and private Command Center
+- `lib/agents/` — agent runtime and definitions
+- `lib/core/` — missions, tasks, opportunities, orchestration
+- `lib/db/` — Neon database access
+- `db/migrations/` — database schema migrations
+- `public/brand/` — Jabari brand assets
 
-- Public Jabari founder hub (Linktree-style, no signup)
-- Red / gold / black visual identity
-- Jabari portrait brand asset
-- Private Command Center shell
-- Agent registry and provider-agnostic runtime
-- Orchestrator contract
-- Neon-ready initial schema migration
-- No public AI assistant yet — intentionally deferred
+There is no public signup or multi-tenant SaaS layer.
 
-## Run locally
+## Run
+1. Copy `.env.example` to `.env.local`
+2. Set `DATABASE_URL` and `JABARI_ACCESS_KEY`
+3. `npm install`
+4. `npm run dev`
 
-1. Copy `.env.example` to `.env.local`.
-2. Add `DATABASE_URL` when database access is needed.
-3. Install dependencies with `npm install`.
-4. Start with `npm run dev`.
+Do not apply database migrations until the schema is finalized and approved.
 
-The public hub is `/` and the private Command Center shell is `/command`.
+## Repository map
 
-## Database
+`app/` — website routes and private Command Center.
+`lib/agents/` — individual autonomous agents and their registry.
+`lib/core/` — orchestration, missions, tasks, opportunities and event history.
+`lib/database/` — Neon database client.
+`lib/tools/` — shared tool contracts.
+`db/migrations/` — Neon schema migrations.
+`public/brand/` — Jabari visual identity assets.
 
-`db/migrations/001_initial_schema.sql` is prepared for the Neon migration workflow. Do not apply it directly in production without the approved migration/test process.
-
-## Next implementation step
-
-Connect the real discovery/research tools to the agent runtime, then wire task leasing, mission creation, opportunity persistence and operator controls into the Command Center.
-
-The visitor-facing AI assistant is deliberately not included in this phase.
+Next.js route files such as `page.tsx` and `route.ts` keep their required framework names.
