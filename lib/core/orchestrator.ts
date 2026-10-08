@@ -1,4 +1,4 @@
-import type {AgentTask> from "../agents/agent-runtime";
+import type {AgentTask} from "../agents/agent-runtime";
 export class Orchestrator{
   async dispatch(task:AgentTask){return {accepted:true,taskId:task.id};}
 }
