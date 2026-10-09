@@ -1,0 +1,15 @@
+.cms-public-list{display:grid;gap:30px;margin-top:34px}
+.cms-public-card{padding:0 0 28px;border-bottom:1px solid rgba(179,139,25,.24)}
+.cms-public-card h2,.cms-about-heading{margin:0 0 16px;color:#f4eee3;font-size:clamp(24px,4vw,34px);line-height:1.25}
+.cms-rich-content,.cms-about-content{overflow-wrap:anywhere}
+.cms-rich-content p,.cms-about-content p{color:#aaa095;font:16px/1.9 Arial,Helvetica,sans-serif}
+.cms-rich-content h1,.cms-rich-content h2,.cms-rich-content h3,.cms-rich-content h4{color:#f4eee3;line-height:1.3}
+.cms-rich-content a,.cms-about-content a{color:#d8b94b;text-decoration:underline;text-underline-offset:3px}
+.cms-rich-content ul,.cms-rich-content ol,.cms-about-content ul,.cms-about-content ol{padding-left:24px;color:#aaa095;font:15px/1.9 Arial,Helvetica,sans-serif}
+.cms-rich-content blockquote,.cms-about-content blockquote{margin:18px 0;padding:5px 0 5px 18px;border-left:2px solid #c5a53a;color:#b7aa96}
+.cms-rich-content img,.cms-rich-content video,.cms-about-content img,.cms-about-content video,.cms-site-media{display:block;width:auto;max-width:100%;max-height:620px;height:auto;margin:20px 0;border-radius:12px;object-fit:contain}
+.cms-about-content{display:grid;gap:8px}
+.cms-about-heading{font-family:Georgia,"Times New Roman",serif;font-weight:700}
+.cms-item-link{margin-top:22px}
+.cms-public-card .cms-item-link{margin-top:8px}
+@media(max-width:560px){.cms-rich-content p,.cms-about-content p{font-size:14px}.cms-public-card{padding-bottom:22px}}
