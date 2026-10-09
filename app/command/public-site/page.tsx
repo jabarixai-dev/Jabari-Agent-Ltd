@@ -155,7 +155,7 @@ export default function PublicSitePage() {
       </div>)}
       <div className="cms-button-row"><button type="button" className="control-button" onClick={()=>patchAbout({blocks:[...content.about.blocks,{id:crypto.randomUUID(),type:"paragraph",html:""}]})}>+ ADD PARAGRAPH</button><button type="button" className="control-button" onClick={()=>patchAbout({blocks:[...content.about.blocks,{id:crypto.randomUUID(),type:"heading",html:""}]})}>+ ADD HEADING</button></div>
       <div className="cms-form-grid"><label>Link Text<input value={content.about.linkText} onChange={e=>patchAbout({linkText:e.target.value})}/></label><label>Destination URL<input value={content.about.url} onChange={e=>patchAbout({url:e.target.value})}/></label><label>Link display<select value={content.about.linkMode} onChange={e=>patchAbout({linkMode:e.target.value as "text"|"url"})}><option value="text">Clickable text</option><option value="url">Show naked URL</option></select></label></div>
-    </section>)}
+    </section>
     <div className="cms-sticky-save"><button className="save-button" type="button" onClick={save} disabled={saving}>{saving?"SAVING…":"SAVE ALL CHANGES"}</button>{notice&&<p className="cms-notice" role="status">{notice}</p>}</div>
     <p className="admin-note">Uploaded media is stored in Neon. Image limit: 5 MB. Video limit: 12 MB; larger video files should use a hosted URL.</p>
   </main>;
