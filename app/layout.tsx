@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./command-center.css";
+import "./public-site-content.css";
 
 export default function RootLayout({
 children,
