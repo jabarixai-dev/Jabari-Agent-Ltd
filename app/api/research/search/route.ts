@@ -14,11 +14,22 @@ function db() {
   if (!url) throw new Error("DATABASE_URL is not configured");
   return neon(url);
 }
+function lagosDateParts(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Lagos",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  return Object.fromEntries(parts.map((part) => [part.type, part.value])) as Record<string, string>;
+}
 function monthKey(date = new Date()) {
-  return `serpapi:month:${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+  const parts = lagosDateParts(date);
+  return `serpapi:month:${parts.year}-${parts.month}`;
 }
 function dayKey(date = new Date()) {
-  return `serpapi:day:${date.toISOString().slice(0, 10)}`;
+  const parts = lagosDateParts(date);
+  return `serpapi:day:${parts.year}-${parts.month}-${parts.day}`;
 }
 async function reserve(sql: ReturnType<typeof neon>, key: string, limit: number) {
   const rows = await sql`
@@ -31,6 +42,13 @@ async function reserve(sql: ReturnType<typeof neon>, key: string, limit: number)
   `;
   return rows.length ? Number(rows[0].count) : null;
 }
+async function releaseReservation(sql: ReturnType<typeof neon>, key: string) {
+  await sql`
+    UPDATE public.api_usage_counters
+    SET count = GREATEST(count - 1, 0), updated_at = NOW()
+    WHERE scope = ${key}
+  `;
+}
 export async function GET(request: NextRequest) {
   if (!isAgentAdmin(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const query = (request.nextUrl.searchParams.get("q") || "").trim();
@@ -40,10 +58,20 @@ export async function GET(request: NextRequest) {
   if (!apiKey) return NextResponse.json({ error: "SERPAPI_API_KEY is not configured." }, { status: 503 });
   try {
     const sql = db();
-    const monthCount = await reserve(sql, monthKey(), MONTHLY_APP_CAP);
-    if (monthCount === null) return NextResponse.json({ error: `Monthly app safety cap reached (${MONTHLY_APP_CAP}). Search blocked.` }, { status: 429 });
-    const dayCount = await reserve(sql, dayKey(), DAILY_CAP);
+    const currentDayKey = dayKey();
+    const currentMonthKey = monthKey();
+
+    // Reserve daily first so a daily-cap rejection cannot consume a monthly slot.
+    const dayCount = await reserve(sql, currentDayKey, DAILY_CAP);
     if (dayCount === null) return NextResponse.json({ error: `Daily app safety cap reached (${DAILY_CAP}). Try again tomorrow.` }, { status: 429 });
+
+    const monthCount = await reserve(sql, currentMonthKey, MONTHLY_APP_CAP);
+    if (monthCount === null) {
+      // Return the daily slot if the monthly cap blocks this request.
+      await releaseReservation(sql, currentDayKey);
+      return NextResponse.json({ error: `Monthly app safety cap reached (${MONTHLY_APP_CAP}). Search blocked.` }, { status: 429 });
+    }
+
     const params = new URLSearchParams({ engine: "google", q: query, api_key: apiKey, output: "json", num: "10" });
     const upstream = await fetch(`${SERPAPI_ENDPOINT}?${params.toString()}`, {
       headers: { Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(10000)
@@ -63,7 +91,7 @@ export async function GET(request: NextRequest) {
       INSERT INTO public.activity_events
         (id, event_type, entity_type, entity_id, description, metadata, actor_type, actor_id, payload, created_at)
       VALUES (
-        ${`event_${crypto.randomUUID()}`}, 'serpapi_search', 'api_usage', ${monthKey()},
+        ${`event_${crypto.randomUUID()}`}, 'serpapi_search', 'api_usage', ${currentMonthKey},
         ${`SerpAPI search completed: ${query.slice(0, 120)}`},
         ${JSON.stringify({ query, results: results.length, monthlyAppSearchesUsed: monthCount, dailySearchesUsed: dayCount })}::jsonb,
         'system', 'serpapi-budget-guard',
