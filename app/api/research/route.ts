@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 import type { NeonQueryFunction } from "@neondatabase/serverless";
-import { isAgentAdmin, isSameOrigin } from "../../../../lib/agents/admin-auth";
+import { isAgentAdmin, isSameOrigin } from "../../../lib/agents/admin-auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
