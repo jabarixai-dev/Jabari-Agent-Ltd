@@ -1,0 +1,30 @@
+name: Jabari Agent Worker
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+concurrency:
+  group: jabari-agent-worker
+  cancel-in-progress: false
+
+jobs:
+  run-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process one queued task
+        env:
+          WORKER_URL: ${{ secrets.JABARI_WORKER_URL }}
+          WORKER_SECRET: ${{ secrets.JABARI_WORKER_SECRET }}
+        run: |
+          if [ -z "$WORKER_URL" ] || [ -z "$WORKER_SECRET" ]; then
+            echo "Missing JABARI_WORKER_URL or JABARI_WORKER_SECRET repository secrets." >&2
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error \
+            --max-time 35 \
+            -X POST "$WORKER_URL/api/worker" \
+            -H "Authorization: Bearer $WORKER_SECRET" \
+            -H "Content-Type: application/json" \
+            -d '{}'
