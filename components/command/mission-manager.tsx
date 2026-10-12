@@ -4,9 +4,19 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 
 type Mission = { id: string; name: string; objective: string; status: string; automation_mode: string };
 type Agent = { id: string; name: string; status: string };
-type Task = { id: string; title: string; description: string; type: string; status: string; agent_name?: string | null; mission_name?: string | null };
+type Task = {
+  id: string; title: string; description: string; type: string; status: string;
+  agent_name?: string | null; mission_name?: string | null; result?: unknown;
+  output?: unknown; error?: string | null; created_at?: string; completed_at?: string | null;
+};
 const fieldStyle: React.CSSProperties = { display:"block",width:"100%",marginTop:6,padding:12,background:"#111",color:"#fff",border:"1px solid #444",borderRadius:8 };
 const labelStyle: React.CSSProperties = { display:"block",fontSize:14 };
+
+function readable(value: unknown) {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string") return value;
+  return JSON.stringify(value, null, 2);
+}
 
 export default function MissionManager() {
   const [key,setKey]=useState(""); const [unlocked,setUnlocked]=useState(false);
@@ -60,7 +70,7 @@ export default function MissionManager() {
         {!missions.length&&<p className="command-muted">No missions yet. Create the first one above.</p>}
       </div>
       <div className="section-heading" style={{marginTop:32}}><h3>Assign a task</h3></div>
-      <p className="command-muted">Tasks are stored as pending. The execution worker is not connected yet, so assigning a task does not mean the agent has performed it.</p>
+      <p className="command-muted">Tasks are saved to the database. The scheduled worker processes eligible pending tasks; completed output appears under each task below.</p>
       <form onSubmit={createTask} className="agent-form" style={{display:"grid",gap:12}}>
         <label style={labelStyle}>Task title<input value={taskTitle} onChange={e=>setTaskTitle(e.target.value)} required maxLength={160} style={fieldStyle}/></label>
         <label style={labelStyle}>Task details<textarea value={taskDescription} onChange={e=>setTaskDescription(e.target.value)} maxLength={2000} rows={3} style={fieldStyle}/></label>
@@ -68,9 +78,19 @@ export default function MissionManager() {
         <label style={labelStyle}>Agent<select value={agentId} onChange={e=>setAgentId(e.target.value)} required style={fieldStyle}><option value="">Select an agent</option>{agents.map(a=><option key={a.id} value={a.id}>{a.name} ({a.status})</option>)}</select></label>
         <button className="control-button" disabled={busy||!missions.length||!agents.length}>{busy?"Saving…":"Queue task"}</button>
       </form>
-      <div className="section-heading" style={{marginTop:32}}><h3>Recent tasks</h3></div>
+      <div className="section-heading" style={{marginTop:32}}><h3>Recent tasks</h3><button type="button" className="control-button" disabled={busy} onClick={()=>refresh().catch(e=>setError(e.message))}>Refresh tasks</button></div>
       <div className="agent-grid">
-        {tasks.map(t=><article className="command-card" key={t.id}><div className="card-topline"><span className="status-dot"/><small>{t.status} · {t.type}</small></div><h3>{t.title}</h3><p>{t.description||"No extra details."}</p><p className="command-muted">Agent: {t.agent_name||"Unassigned"} · Mission: {t.mission_name||"Unknown"}</p><p className="command-muted">ID: {t.id}</p></article>)}
+        {tasks.map(t=>{
+          const result = t.result ?? t.output;
+          return <article className="command-card" key={t.id}>
+            <div className="card-topline"><span className="status-dot"/><small>{t.status} · {t.type}</small></div>
+            <h3>{t.title}</h3><p>{t.description||"No extra details."}</p>
+            <p className="command-muted">Agent: {t.agent_name||"Unassigned"} · Mission: {t.mission_name||"Unknown"}</p>
+            {t.error&&<p role="alert" style={{color:"#ff8d8d",whiteSpace:"pre-wrap"}}>Error: {t.error}</p>}
+            {result!=null&&<details open={t.status==="completed"} style={{marginTop:12}}><summary style={{cursor:"pointer",fontWeight:700}}>Task results</summary><pre style={{whiteSpace:"pre-wrap",overflowWrap:"anywhere",fontSize:12,lineHeight:1.5,background:"#0d0d0d",border:"1px solid #444",borderRadius:8,padding:12,marginTop:8,maxHeight:520,overflow:"auto"}}>{readable(result)}</pre></details>}
+            <p className="command-muted">ID: {t.id}{t.completed_at?` · Completed ${new Date(t.completed_at).toLocaleString()}`:""}</p>
+          </article>;
+        })}
         {!tasks.length&&<p className="command-muted">No tasks have been queued yet.</p>}
       </div>
     </>}
