@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
 
     await sql`
       INSERT INTO public.agent_runs (agent_id, task_id, status, summary, started_at)
-      VALUES (${agentId}, ${taskId}::uuid, 'running', ${"Started: " + title}, NOW())
+      VALUES (${agentId}, ${taskId}, 'running', ${"Started: " + title}, NOW())
     `;
 
     // Existing tasks may be titled "manual"; their descriptions contain the
@@ -87,11 +87,11 @@ export async function POST(request: NextRequest) {
         await sql`
           UPDATE public.agent_tasks SET status='failed', error=${reason},
             completed_at=NOW(), lease_until=NULL
-          WHERE id=${taskId}::uuid AND lease_owner=${workerId}
+          WHERE id=${taskId} AND lease_owner=${workerId}
         `;
         await sql`
           UPDATE public.agent_runs SET status='failed', summary=${reason}, finished_at=NOW()
-          WHERE task_id=${taskId}::uuid AND agent_id=${agentId} AND status='running'
+          WHERE task_id=${taskId} AND agent_id=${agentId} AND status='running'
         `;
         return NextResponse.json({ ok:false, processed:true, taskId, status:"failed", error:reason }, { status:500 });
       }
@@ -111,11 +111,11 @@ export async function POST(request: NextRequest) {
         await sql`
           UPDATE public.agent_tasks SET status='failed', error=${reason.slice(0,1000)},
             result=${JSON.stringify({query})}::jsonb, completed_at=NOW(), lease_until=NULL
-          WHERE id=${taskId}::uuid AND lease_owner=${workerId}
+          WHERE id=${taskId} AND lease_owner=${workerId}
         `;
         await sql`
           UPDATE public.agent_runs SET status='failed', summary=${reason.slice(0,1000)}, finished_at=NOW()
-          WHERE task_id=${taskId}::uuid AND agent_id=${agentId} AND status='running'
+          WHERE task_id=${taskId} AND agent_id=${agentId} AND status='running'
         `;
         return NextResponse.json({ ok:false, processed:true, taskId, status:"failed", error:reason }, { status:502 });
       }
@@ -130,12 +130,12 @@ export async function POST(request: NextRequest) {
       await sql`
         UPDATE public.agent_tasks SET status='completed',
           result=${JSON.stringify(result)}::jsonb, error=NULL, completed_at=NOW(), lease_until=NULL
-        WHERE id=${taskId}::uuid AND lease_owner=${workerId}
+        WHERE id=${taskId} AND lease_owner=${workerId}
       `;
       await sql`
         UPDATE public.agent_runs SET status='completed',
           summary=${"Research completed: " + title}, finished_at=NOW()
-        WHERE task_id=${taskId}::uuid AND agent_id=${agentId} AND status='running'
+        WHERE task_id=${taskId} AND agent_id=${agentId} AND status='running'
       `;
       await sql`
         INSERT INTO public.activity_events (actor_type, actor_id, event_type, entity_type, entity_id, payload)
@@ -155,12 +155,12 @@ export async function POST(request: NextRequest) {
     await sql`
       UPDATE public.agent_tasks SET status='waiting', result=${JSON.stringify(result)}::jsonb,
         error=NULL, completed_at=NOW(), lease_until=NULL
-      WHERE id=${taskId}::uuid AND lease_owner=${workerId}
+      WHERE id=${taskId} AND lease_owner=${workerId}
     `;
     await sql`
       UPDATE public.agent_runs SET status='waiting', summary=${"Parked for review: " + title},
         finished_at=NOW()
-      WHERE task_id=${taskId}::uuid AND agent_id=${agentId} AND status='running'
+      WHERE task_id=${taskId} AND agent_id=${agentId} AND status='running'
     `;
     return NextResponse.json({ok:true, processed:true, taskId, status:"waiting", result});
   } catch (error) {
