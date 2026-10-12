@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
         ORDER BY queued.created_at ASC
         FOR UPDATE OF queued SKIP LOCKED LIMIT 1
       )
-      RETURNING task.id, task.agent_id, task.mission_id, task.type, task.input
+      RETURNING task.id, task.agent_id, task.mission_id, task.type, task.title, task.description, task.input
     `;
 
     if (!claimed.length) return NextResponse.json({
@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
     const taskType = textValue(task.type, "manual").toLowerCase();
     const input = task.input && typeof task.input === "object"
       ? task.input as Record<string, unknown> : {};
-    const title = textValue(input.title, taskType || "Task");
-    const description = textValue(input.description);
+    const title = textValue(input.title, textValue(task.title, taskType || "Task"));
+    const description = textValue(input.description, textValue(task.description));
 
     const agents = await sql`
       SELECT name, mission, instructions, capabilities
@@ -68,8 +68,15 @@ export async function POST(request: NextRequest) {
     const agent = (agents[0] ?? {}) as Record<string, unknown>;
 
     await sql`
-      INSERT INTO public.agent_runs (agent_id, task_id, status, summary, started_at)
-      VALUES (${agentId}, ${taskId}, 'running', ${"Started: " + title}, NOW())
+      INSERT INTO public.agent_runs (id, agent_id, task_id, status, summary, started_at)
+      VALUES (
+        ${`run-${crypto.randomUUID()}`},
+        ${agentId},
+        ${taskId},
+        'running',
+        ${"Started: " + title},
+        NOW()
+      )
     `;
 
     // Existing tasks may be titled "manual"; their descriptions contain the
@@ -138,9 +145,20 @@ export async function POST(request: NextRequest) {
         WHERE task_id=${taskId} AND agent_id=${agentId} AND status='running'
       `;
       await sql`
-        INSERT INTO public.activity_events (actor_type, actor_id, event_type, entity_type, entity_id, payload)
-        VALUES ('agent', ${agentId}, 'task_completed', 'agent_task', ${taskId},
-          ${JSON.stringify({title, type:taskType, resultCount:results.length})}::jsonb)
+        INSERT INTO public.activity_events (
+          id, event_type, description, actor_type, actor_id,
+          entity_type, entity_id, payload
+        )
+        VALUES (
+          ${`event-${crypto.randomUUID()}`},
+          'task_completed',
+          ${"Research task completed: " + title},
+          'agent',
+          ${agentId},
+          'agent_task',
+          ${taskId},
+          ${JSON.stringify({title, type:taskType, resultCount:results.length})}::jsonb
+        )
       `;
       return NextResponse.json({ok:true, processed:true, taskId, status:"completed", result});
     }
