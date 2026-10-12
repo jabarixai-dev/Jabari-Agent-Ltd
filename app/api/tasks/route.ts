@@ -19,10 +19,12 @@ export async function GET(request: NextRequest) {
     const sql = db();
     const rows = await sql`
       SELECT t.id, t.agent_id, a.name AS agent_name, t.mission_id,
-             m.name AS mission_name, t.type, t.input, t.status, t.created_at
+             m.name AS mission_name, t.type, t.title, t.description,
+             t.input, t.status, t.result, t.output, t.error,
+             t.created_at, t.started_at, t.completed_at
       FROM public.agent_tasks t
       LEFT JOIN public.agents a ON a.id = t.agent_id
-      LEFT JOIN public.missions m ON m.id = t.mission_id
+      LEFT JOIN public.missions m ON m.id::text = t.mission_id::text
       ORDER BY t.created_at DESC
       LIMIT 100
     `;
@@ -30,10 +32,16 @@ export async function GET(request: NextRequest) {
       const input = row.input && typeof row.input === "object"
         ? row.input as Record<string, unknown>
         : {};
+      const result = row.result ?? row.output ?? null;
       return {
         ...row,
-        title: typeof input.title === "string" ? input.title : String(row.type ?? "Task"),
-        description: typeof input.description === "string" ? input.description : "",
+        title: typeof row.title === "string" && row.title.trim()
+          ? row.title
+          : typeof input.title === "string" ? input.title : String(row.type ?? "Task"),
+        description: typeof row.description === "string" && row.description.trim()
+          ? row.description
+          : typeof input.description === "string" ? input.description : "",
+        result,
       };
     });
     return NextResponse.json({ tasks });
@@ -76,25 +84,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Resume or enable this agent before assigning a task." }, { status: 409 });
     }
 
-    const missions = await sql`SELECT id FROM public.missions WHERE id = ${missionId}::uuid LIMIT 1`;
+    const missions = await sql`SELECT id FROM public.missions WHERE id::text = ${missionId} LIMIT 1`;
     if (!missions.length) {
       return NextResponse.json({ error: "The selected mission does not exist." }, { status: 404 });
     }
 
     const input = JSON.stringify({ title, description, requestedBy: "command-center" });
     const rows = await sql`
-      INSERT INTO public.agent_tasks (agent_id, mission_id, type, input, status)
-      VALUES (${agentId}, ${missionId}::uuid, ${type}, ${input}::jsonb, 'pending')
-      RETURNING id, agent_id, mission_id, type, input, status, created_at
+      INSERT INTO public.agent_tasks (id, agent_id, mission_id, title, description, type, input, status)
+      VALUES (${`task-${crypto.randomUUID()}`}, ${agentId}, ${missionId}, ${title}, ${description}, ${type}, ${input}::jsonb, 'pending')
+      RETURNING id, agent_id, mission_id, type, title, description, input, status, result, created_at
     `;
     const row = rows[0] as Record<string, unknown>;
     return NextResponse.json({
-      task: {
-        ...row,
-        title,
-        description,
-      },
-      message: "Task saved as pending. An execution worker is not connected yet, so the agent has not run this task.",
+      task: row,
+      message: "Task saved as pending. The worker will process it when the scheduled workflow runs.",
     }, { status: 201 });
   } catch (error) {
     console.error("Task creation failed", error);
