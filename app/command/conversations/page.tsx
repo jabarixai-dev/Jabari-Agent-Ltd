@@ -1,1 +1,2 @@
-
+import PipelineManager from "../../../components/command/pipeline-manager";
+export default function ConversationsPage(){return <><header className="command-page-heading"><p className="gold command-kicker">COMMUNICATION HISTORY</p><h1>Conversations</h1><p className="command-muted">Record notes and follow-ups. This page does not send messages.</p></header><PipelineManager section="conversations"/></>}
