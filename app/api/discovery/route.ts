@@ -19,17 +19,18 @@ export async function POST(req:NextRequest){
  if(!isAgentAdmin(req))return NextResponse.json({error:"Unauthorized"},{status:401});
  try{const body=await req.json() as Record<string,unknown>;const action=str(body.action,40);const s=db();
   if(action==="add"){
-   const intent=allowed(body.intent,["buyer","seller"]),asset=allowed(body.assetType,["car","land","house","property"]),title=str(body.title,220),source=str(body.sourceUrl,1200);
-   if(!intent||!asset||!title||!source)return NextResponse.json({error:"Intent, asset type, title and source URL are required."},{status:400});
+   const intent=allowed(body.intent,["buyer","seller","lead"]),asset=allowed(body.assetType,["car","land","house","property","service","other"]),category=allowed(body.category,["car_property","review","website","commission","other"],"car_property"),title=str(body.title,220),source=str(body.sourceUrl,1200);
+   if(!intent||!asset||!title||!source)return NextResponse.json({error:"Record type, category, title and source URL are required."},{status:400});
+   if(category==="car_property"&&intent!=="buyer"&&intent!=="seller")return NextResponse.json({error:"Car/property records must be buyers or sellers."},{status:400});
+   if(category!=="car_property"&&intent!=="lead")return NextResponse.json({error:"Review, website and commission opportunities must be saved as leads."},{status:400});
    let url:URL;try{url=new URL(source);if(!["http:","https:"].includes(url.protocol))throw new Error();}catch{return NextResponse.json({error:"Source URL must be a valid HTTP or HTTPS URL."},{status:400});}
    const pmin=numOrNull(body.priceMin),pmax=numOrNull(body.priceMax);if(pmin!==null&&pmax!==null&&pmax<pmin)return NextResponse.json({error:"Maximum price/budget must be at least the minimum."},{status:400});
    const id=`discovery-${crypto.randomUUID()}`;
-   const rows=await s`INSERT INTO public.discovery_records(id,intent,asset_type,title,contact_name,business_name,phone,email,location,state,make_model,property_type,price_min,price_max,currency,source_url,source_excerpt,verification_status,notes,discovered_at,last_checked_at) VALUES(${id},${intent},${asset},${title},${str(body.contactName,160)||null},${str(body.businessName,180)||null},${str(body.phone,80)||null},${str(body.email,250)||null},${str(body.location,180)},${str(body.state,100)},${str(body.makeModel,180)||null},${str(body.propertyType,100)||null},${pmin},${pmax},'NGN',${url.toString()},${str(body.sourceExcerpt,3000)},${allowed(body.verificationStatus,["unverified","evidence_found","manually_verified"],"unverified")},${str(body.notes,2000)},NOW(),NOW()) ON CONFLICT(id) DO NOTHING RETURNING *`;
-   await s`INSERT INTO public.activity_events(id,event_type,description,actor_type,actor_id,entity_type,entity_id,payload) VALUES(${`event-${crypto.randomUUID()}`},'discovery_record_created',${`Discovery record added: ${title}`},'admin','control-center','discovery_record',${id},${JSON.stringify({intent,assetType:asset,sourceUrl:url.toString()})}::jsonb)`;
+   const rows=await s`INSERT INTO public.discovery_records(id,intent,asset_type,opportunity_category,title,contact_name,business_name,phone,email,location,state,make_model,property_type,price_min,price_max,currency,source_url,source_excerpt,verification_status,notes,discovered_at,last_checked_at) VALUES(${id},${intent},${asset},${category},${title},${str(body.contactName,160)||null},${str(body.businessName,180)||null},${str(body.phone,80)||null},${str(body.email,250)||null},${str(body.location,180)},${str(body.state,100)},${str(body.makeModel,180)||null},${str(body.propertyType,100)||null},${pmin},${pmax},'NGN',${url.toString()},${str(body.sourceExcerpt,3000)},${allowed(body.verificationStatus,["unverified","evidence_found","manually_verified"],"unverified")},${str(body.notes,2000)},NOW(),NOW()) ON CONFLICT(id) DO NOTHING RETURNING *`;
    return NextResponse.json({record:rows[0]},{status:201});
   }
   if(action==="match"){
-   const records=await s`SELECT * FROM public.discovery_records WHERE status='active' AND verification_status <> 'rejected' AND verification_status <> 'stale' ORDER BY created_at DESC LIMIT 300`;
+   const records=await s`SELECT * FROM public.discovery_records WHERE status='active' AND opportunity_category='car_property' AND intent IN ('buyer','seller') AND verification_status <> 'rejected' AND verification_status <> 'stale' ORDER BY created_at DESC LIMIT 300`;
    const buyers=records.filter((r:any)=>r.intent==='buyer'),sellers=records.filter((r:any)=>r.intent==='seller');let created=0;
    for(const b of buyers)for(const v of sellers){if(b.asset_type!==v.asset_type)continue;let score=40;const rationale:string[]=[`Same asset category: ${b.asset_type}`];
     if(b.state&&v.state&&String(b.state).toLowerCase()===String(v.state).toLowerCase()){score+=20;rationale.push("Same state");}
@@ -42,7 +43,6 @@ export async function POST(req:NextRequest){
     const out=await s`INSERT INTO public.discovery_matches(id,buyer_id,seller_id,score,rationale,status) VALUES(${id},${b.id},${v.id},${score},${JSON.stringify(rationale)}::jsonb,'suggested') ON CONFLICT(buyer_id,seller_id) DO UPDATE SET score=EXCLUDED.score,rationale=EXCLUDED.rationale,updated_at=NOW() RETURNING (xmax=0) AS inserted`;
     if(out[0]?.inserted)created++;
    }
-   await s`INSERT INTO public.activity_events(id,event_type,description,actor_type,actor_id,entity_type,payload) VALUES(${`event-${crypto.randomUUID()}`},'discovery_matching_run',${`Buyer/seller matching run: ${created} new matches`},'admin','control-center','discovery_match',${JSON.stringify({buyers:buyers.length,sellers:sellers.length,newMatches:created})}::jsonb)`;
    return NextResponse.json({ok:true,newMatches:created,buyers:buyers.length,sellers:sellers.length});
   }
   if(action==="match-status"){
